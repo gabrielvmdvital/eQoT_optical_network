@@ -188,9 +188,9 @@ def plot_scatter_comp(df, target, result_model_evaluation, figsize=(10,6), valid
     'NLIN_Power':  f'{nlin_label}'
   }[target]
   if validation_mode:
-    title = f"Desempenho do modelo em relação\nao conjunto de validação:\nR² = {result_model_evaluation['R²']}, MAE = {result_model_evaluation['MAE']}\nMSE = {result_model_evaluation['MSE']},  RMSE = {round(result_model_evaluation['MSE']**0.5, 3)}"
+    title = f"Desempenho do modelo em relação\nao conjunto de validação:\nR² = {result_model_evaluation['R²']}; MAE = {result_model_evaluation['MAE']}\nMSE = {result_model_evaluation['MSE']},  RMSE = {round(result_model_evaluation['MSE']**0.5, 3)}"
   else:
-    title= f"Estatísticas do modelo:\nR² = {result_model_evaluation['R²']}, MAE = {result_model_evaluation['MAE']}\nMSE = {result_model_evaluation['MSE']}, RMSE = {round(result_model_evaluation['MSE']**0.5, 3)}"
+    title= f"Estatísticas do modelo:\nR² = {result_model_evaluation['R²']}; MAE = {result_model_evaluation['MAE']}\nMSE = {result_model_evaluation['MSE']}; RMSE = {round(result_model_evaluation['MSE']**0.5, 3)}"
   
   target_pred = target + '_pred'
   ax.scatter(df[target], df[target_pred], label = 'Estimado')
@@ -211,7 +211,8 @@ def plot_scatter_comp(df, target, result_model_evaluation, figsize=(10,6), valid
 def plot_all_fiber_pdBmCh(df_x, df_y, model, target, df_not_scaled=None, coef_mod=1/4, L=100, NCh=11, NSpam=15, scaled=False, figsize=(9,6)):
     label = {
     'OSNRdB_NL':  f'{osnr_label}',
-    'NLIN_Power':  f'{nlin_label}'
+    'NLIN_Power':  f'{nlin_label}',
+
   }[target]
     color_per_fiber = {
     'NZDSF': ['b', 'orange'],
@@ -247,7 +248,10 @@ def plot_all_fiber_pdBmCh(df_x, df_y, model, target, df_not_scaled=None, coef_mo
         ax.plot(df_to_plot['Spans_PdBmCh'], df_to_plot[target], label=f'{label} (Real) - {DisPar_to_Fiber[DispPar]}', marker='o', color=color_per_fiber[DisPar_to_Fiber[DispPar]][0])
         ax.plot(df_to_plot['Spans_PdBmCh'], df_to_plot[target_pred], linestyle='--', label=f'{label} (Estimada) - {DisPar_to_Fiber[DispPar]}', marker='^', color=color_per_fiber[DisPar_to_Fiber[DispPar]][1])
 
-    ax.set(xlabel='Potência de entrada [dBm]', ylabel= f'{label} [dB]')
+    if target == 'NLIN_Power':
+      ax.set(xlabel='Potência de entrada [dBm]', ylabel= f'{label} [dBm]')
+    else:
+      ax.set(xlabel='Potência de entrada [dBm]', ylabel= f'{label} [dB]')
     ax.legend(loc='upper left')
     ax.grid()
     plt.show()
